@@ -1,0 +1,92 @@
+[function] (\result: ()) abs 
+(
+	(a_0$1: int[]),
+	(n$1: int),
+)
+_ENTRY_LOC#1:
+	successors:
+		_LOOPHEAD_LOC#4 	(i$1: int) = 0
+	requires (\length(a_0$1) > (n$1 - 1))
+	requires (n$1 >= 1)
+	decreases (
+	)
+
+_LOOPHEAD_LOC#4:
+	predecessors: _ENTRY_LOC#1 _LOC#18
+	successors:
+		_LOC#5 	(_cond$1: bool) = (i$1 < n$1)
+	loop invariant (((0 <= i$1) && (i$1 <= n$1)) && (\forall (ix$1: int). (((0 <= ix$1) && (ix$1 < i$1)) ==> (a_0$1[ix$1] >= 0))))
+	loop invariant (\length(a_0$1) > (n$1 - 1))
+	loop variant (
+	)
+
+_LOC#5:
+	predecessors: _LOOPHEAD_LOC#4
+	successors:
+		_LOC#6 	assume _cond$1
+		_LOC#7 	assume !_cond$1
+
+_LOC#6:
+	predecessors: _LOC#5
+	successors:
+		_LOC#8 	@assert (0 <= i$1)
+
+_LOC#7:
+	predecessors: _LOC#5
+	successors:
+		_LOC#20 	@assert (\length(a_0$1) > (n$1 - 1))
+
+_LOC#8:
+	predecessors: _LOC#6
+	successors:
+		_LOC#9 	@assert (i$1 < \length(a_0$1))
+
+_LOC#9:
+	predecessors: _LOC#8
+	successors:
+		_LOC#10 	(_cond$2: bool) = (a_0$1[i$1] < 0)
+
+_LOC#10:
+	predecessors: _LOC#9
+	successors:
+		_LOC#11 	assume _cond$2
+		_LOC#18 	assume !_cond$2
+
+_LOC#11:
+	predecessors: _LOC#10
+	successors:
+		_LOC#12 	@assert (0 <= i$1)
+
+_LOC#12:
+	predecessors: _LOC#11
+	successors:
+		_LOC#13 	@assert (i$1 < \length(a_0$1))
+
+_LOC#13:
+	predecessors: _LOC#12
+	successors:
+		_LOC#14 	@assert (0 <= i$1)
+
+_LOC#14:
+	predecessors: _LOC#13
+	successors:
+		_LOC#15 	@assert (i$1 < \length(a_0$1))
+
+_LOC#15:
+	predecessors: _LOC#14
+	successors:
+		_LOC#18 	(a_0$1[i$1]: int) := -a_0$1[i$1]
+
+_LOC#18:
+	predecessors: _LOC#15 _LOC#10
+	successors:
+		_LOOPHEAD_LOC#4 	(i$1: int) = (i$1 + 1)
+
+_LOC#20:
+	predecessors: _LOC#7
+	successors:
+		_EXIT_LOC#2 	@assert (\forall (ix$2: int). (((0 <= ix$2) && (ix$2 < n$1)) ==> (a_0$1[ix$2] >= 0)))
+
+_EXIT_LOC#2:
+	predecessors: _LOC#20
+
